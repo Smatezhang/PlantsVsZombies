@@ -1,11 +1,12 @@
 package com.zhang.pvz.plantsvszombies;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 
 import android.view.Display;
@@ -23,7 +24,7 @@ import com.zhang.pvz.plantsvszombies.custom.PlantWinView;
 import com.zhang.pvz.plantsvszombies.custom.ProcessView;
 import com.zhang.pvz.plantsvszombies.custom.ZombieWinView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     // 界面
     MenuView menuView_ = null;
     HelpViewA helpView_ = null;
@@ -68,12 +69,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int Message_MainMenu_Help_2 = 10;
     public static final int Message_MainMenu_VisitWeb = 11;
 
-    public Handler myHandler_ 		= new Handler()
-    {
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what)
-            {
+    public Handler myHandler_ = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case Message_Failed:
                     onFailed();
                     break;
@@ -111,61 +109,58 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void onFailed()
-    {
+    private void onFailed() {
         onExit();
     }
-    private void onMainMenu()
-    {
-        this.menuView_	 = new MenuView(this);
+
+    private void onMainMenu() {
+        this.menuView_ = new MenuView(this);
         this.setContentView(this.menuView_);
     }
-    protected void onMainMenuSinglePlayer()
-    {
+
+    protected void onMainMenuSinglePlayer() {
         // TODO Auto-generated method stub
     }
-    private void onMainMenuDoublePlayer()
-    {
-        this.doublePlayerModeAView_	= new DoublePlayerModeAView(this);
+
+    private void onMainMenuDoublePlayer() {
+        this.doublePlayerModeAView_ = new DoublePlayerModeAView(this);
         this.setContentView(this.doublePlayerModeAView_);
     }
-    private void onMainMenuAbout()
-    {
-        this.aboutView_				= new AboutView(this);
+
+    private void onMainMenuAbout() {
+        this.aboutView_ = new AboutView(this);
         this.setContentView(this.aboutView_);
     }
-    private void onMainMenuOption()
-    {
-        this.optionView_				= new OptionView(this);
+
+    private void onMainMenuOption() {
+        this.optionView_ = new OptionView(this);
         this.setContentView(this.optionView_);
     }
-    private void onMainMenuHelpA()
-    {
+
+    private void onMainMenuHelpA() {
         this.setContentView(new HelpViewA(this));
     }
-    private void onExit()
-    {
+
+    private void onExit() {
         System.exit(0);
     }
 
-    private void onPlantWin()
-    {
-        this.plantWinView_	= new PlantWinView(this);
+    private void onPlantWin() {
+        this.plantWinView_ = new PlantWinView(this);
         this.setContentView(this.plantWinView_);
     }
-    private void onZombieWin()
-    {
-        this.zombieWinView_				= new ZombieWinView(this);
+
+    private void onZombieWin() {
+        this.zombieWinView_ = new ZombieWinView(this);
         this.setContentView(this.zombieWinView_);
     }
-    private void onMainMenuHelpB()
-    {
+
+    private void onMainMenuHelpB() {
         this.setContentView(new HelpViewB(this));
     }
 
-    private void onVisitWeb()
-    {
-		/*
+    private void onVisitWeb() {
+        /*
 		Uri uri = Uri.parse("http://blog.csdn.net/MDL13412");
 		Intent it = new Intent(Intent.ACTION_VIEW, uri);
 		startActivity(it);
@@ -173,19 +168,16 @@ public class MainActivity extends AppCompatActivity {
         onMainMenu();
     }
 
-    public boolean hasBackgroundMusic()
-    {
+    public boolean hasBackgroundMusic() {
         return this.hasMusic_;
     }
 
-    public void enableBackgroundMusic()
-    {
-        this.hasMusic_	= true;
+    public void enableBackgroundMusic() {
+        this.hasMusic_ = true;
     }
 
-    public void disableBackgroundMusic()
-    {
-        this.hasMusic_	= false;
+    public void disableBackgroundMusic() {
+        this.hasMusic_ = false;
     }
 
     @Override
@@ -193,38 +185,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
-        int height = display.getHeight();
-        int width = display.getWidth();
+        screenHeight_= display.getHeight();
+        screenWidth_ = display.getWidth();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        this.processViewBackground_ = BitmapFactory.decodeResource(getResources(),R.drawable.background_processview);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.processViewBackground_ = BitmapFactory.decodeResource(getResources(), R.drawable.background_processview);
 
         // 加载进度条
         processView_ = new ProcessView(this, processViewBackground_);
         this.setContentView(processView_);
 
 
-        new Thread()
-        {
-            public void run()
-            {
+        new Thread() {
+            public void run() {
                 // 进度增长85%
-                try
-                {
+                try {
                     activity_.imageFactory_ = new ImageFactory();
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                activity_.plantImageFactory_			= new PlantImageFactory(activity_.imageFactory_);
-                activity_.zombieImageFactory_			= new ZombieImageFactory(activity_.imageFactory_);
-                activity_.cardImageFactory_				= new CardImageFactory(activity_.imageFactory_);
-                activity_.bulletImageFactory_			= new BulletImageFactory(activity_.imageFactory_);
-                activity_.sunImageFactory_				= new SunImageFactory(activity_.imageFactory_);
-                activity_.otherFactory_					= new OtherFactory(activity_.imageFactory_);
-                activity_.musicFactory_                 = new MusicFactory(activity_.imageFactory_);
+                activity_.plantImageFactory_ = new PlantImageFactory(activity_.imageFactory_);
+                activity_.zombieImageFactory_ = new ZombieImageFactory(activity_.imageFactory_);
+                activity_.cardImageFactory_ = new CardImageFactory(activity_.imageFactory_);
+                activity_.bulletImageFactory_ = new BulletImageFactory(activity_.imageFactory_);
+                activity_.sunImageFactory_ = new SunImageFactory(activity_.imageFactory_);
+                activity_.otherFactory_ = new OtherFactory(activity_.imageFactory_);
+                activity_.musicFactory_ = new MusicFactory(activity_.imageFactory_);
 
                 ProcessView.setProcessPercent(ProcessView.getProcessPercent() + 15);
             }
@@ -234,32 +221,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     // 进度增长45%
-    public class ImageFactory
-    {
-        public	Bitmap[][]						plants_;
-        public	Bitmap[][]						zombies_;
-        public	Bitmap[][]						cards_;
-        public Bitmap[][]						bullets_;
-        public	Bitmap[]						suns_;
-        public Bitmap[]						others_		= null;
+    public class ImageFactory {
+        public Bitmap[][] plants_;
+        public Bitmap[][] zombies_;
+        public Bitmap[][] cards_;
+        public Bitmap[][] bullets_;
+        public Bitmap[] suns_;
+        public Bitmap[] others_ = null;
 
-        public ImageFactory() throws InterruptedException
-        {
+        public ImageFactory() throws InterruptedException {
             initBitmaps();
         }
 
-        private void initBitmaps() throws InterruptedException
-        {
-            initPlants();		// 进度增长30%
-            initZombies();	// 进度增长30%
-            initCards();		// 进度增长5%
-            initBullets();	// 进度增长5%
-            initSuns();		// 进度增长5%
-            initOthers();		// 进度增长10%
+        private void initBitmaps() throws InterruptedException {
+            initPlants();        // 进度增长30%
+            initZombies();    // 进度增长30%
+            initCards();        // 进度增长5%
+            initBullets();    // 进度增长5%
+            initSuns();        // 进度增长5%
+            initOthers();        // 进度增长10%
         }
 
-        public Bitmap zoomImage(Bitmap bgimage, int newWidth, int newHeight)
-        {
+        public Bitmap zoomImage(Bitmap bgimage, int newWidth, int newHeight) {
             int width = bgimage.getWidth();
             int height = bgimage.getHeight();
             Matrix matrix = new Matrix();
@@ -272,9 +255,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        private void initPlants()
-        {
-            this.plants_	= new Bitmap[][]
+        private void initPlants() {
+            this.plants_ = new Bitmap[][]
                     {
                             {
                                     BitmapFactory.decodeResource(getResources(), R.drawable.plant_shuangchongsheshou_01),
@@ -413,15 +395,15 @@ public class MainActivity extends AppCompatActivity {
 
             ProcessView.setProcessPercent(ProcessView.getProcessPercent() + 10);
         }
-        private void zoomPlant(Bitmap[]	plants, int width, int height)
-        {
+
+        private void zoomPlant(Bitmap[] plants, int width, int height) {
             int length = plants.length;
 
             for (int i = 0; i < length; ++i)
-                plants[i]	= zoomImage(plants[i], width, height);
+                plants[i] = zoomImage(plants[i], width, height);
         }
-        private void initZombies()
-        {
+
+        private void initZombies() {
             this.zombies_ = new Bitmap[][]
                     {
                             {
@@ -513,7 +495,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_putongjiangshi_attack_20),
                                     BitmapFactory.decodeResource(getResources(),
-                                            R.drawable.zombie_putongjiangshi_attack_21) },
+                                            R.drawable.zombie_putongjiangshi_attack_21)},
                             {
                                     BitmapFactory
                                             .decodeResource(
@@ -558,7 +540,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory
                                             .decodeResource(
                                             getResources(),
-                                            R.drawable.zombie_putongjiangshi_attack_losthead_11) },
+                                            R.drawable.zombie_putongjiangshi_attack_losthead_11)},
                             {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_putongjiangshi_die_01),
@@ -579,7 +561,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_putongjiangshi_die_09),
                                     BitmapFactory.decodeResource(getResources(),
-                                            R.drawable.zombie_putongjiangshi_die_10) },
+                                            R.drawable.zombie_putongjiangshi_die_10)},
                             {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_putongjiangshi_head_01),
@@ -602,7 +584,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_putongjiangshi_head_10),
                                     BitmapFactory.decodeResource(getResources(),
-                                            R.drawable.zombie_putongjiangshi_head_11), },
+                                            R.drawable.zombie_putongjiangshi_head_11),},
                             {
                                     BitmapFactory
                                             .decodeResource(
@@ -675,7 +657,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory
                                             .decodeResource(
                                             getResources(),
-                                            R.drawable.zombie_putongjiangshi_losthead_18) },
+                                            R.drawable.zombie_putongjiangshi_losthead_18)},
                             {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_luzhangjiangshi_01),
@@ -718,7 +700,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_luzhangjiangshi_20),
                                     BitmapFactory.decodeResource(getResources(),
-                                            R.drawable.zombie_luzhangjiangshi_21) },
+                                            R.drawable.zombie_luzhangjiangshi_21)},
                             {
                                     BitmapFactory
                                             .decodeResource(
@@ -763,7 +745,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory
                                             .decodeResource(
                                             getResources(),
-                                            R.drawable.zombie_luzhangjiangshi_attack_11) },
+                                            R.drawable.zombie_luzhangjiangshi_attack_11)},
                             {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_tietongjiangshi_01),
@@ -794,7 +776,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.zombie_tietongjiangshi_14),
                                     BitmapFactory.decodeResource(getResources(),
-                                            R.drawable.zombie_tietongjiangshi_15) },
+                                            R.drawable.zombie_tietongjiangshi_15)},
                             {
                                     BitmapFactory
                                             .decodeResource(
@@ -839,7 +821,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory
                                             .decodeResource(
                                             getResources(),
-                                            R.drawable.zombie_tietongjiangshi_attack_11) },
+                                            R.drawable.zombie_tietongjiangshi_attack_11)},
                             {
                                     BitmapFactory.decodeResource(getResources(), R.drawable.zombie_main_01),
                                     BitmapFactory.decodeResource(getResources(), R.drawable.zombie_main_02),
@@ -877,15 +859,15 @@ public class MainActivity extends AppCompatActivity {
 
             ProcessView.setProcessPercent(ProcessView.getProcessPercent() + 10);
         }
-        private void zoomZombie(Bitmap[]	zombies, int width, int height)
-        {
+
+        private void zoomZombie(Bitmap[] zombies, int width, int height) {
             int length = zombies.length;
 
             for (int i = 0; i < length; ++i)
-                zombies[i]	= zoomImage(zombies[i], width, height);
+                zombies[i] = zoomImage(zombies[i], width, height);
         }
-        private void initCards()
-        {
+
+        private void initCards() {
             this.cards_ = new Bitmap[][]
                     {
                             {
@@ -898,7 +880,7 @@ public class MainActivity extends AppCompatActivity {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.card_mubei_on),
                                     BitmapFactory.decodeResource(getResources(),
-                                            R.drawable.card_mubei_off) },
+                                            R.drawable.card_mubei_off)},
                             {
                                     BitmapFactory.decodeResource(getResources(),
                                             R.drawable.card_putongjiangshi_on),
@@ -949,8 +931,8 @@ public class MainActivity extends AppCompatActivity {
 
             ProcessView.setProcessPercent(ProcessView.getProcessPercent() + 5);
         }
-        private void initBullets()
-        {
+
+        private void initBullets() {
             this.bullets_ = new Bitmap[][]
                     {
                             {BitmapFactory.decodeResource(getResources(), R.drawable.bullet_putongwandou)},
@@ -959,9 +941,9 @@ public class MainActivity extends AppCompatActivity {
 
             ProcessView.setProcessPercent(ProcessView.getProcessPercent() + 5);
         }
-        private void initSuns()
-        {
-            this.suns_		= new Bitmap[]
+
+        private void initSuns() {
+            this.suns_ = new Bitmap[]
                     {
                             BitmapFactory.decodeResource(getResources(), R.drawable.sun_plant),
                             BitmapFactory.decodeResource(getResources(), R.drawable.sun_zombie)
@@ -969,9 +951,9 @@ public class MainActivity extends AppCompatActivity {
 
             ProcessView.setProcessPercent(ProcessView.getProcessPercent() + 5);
         }
-        private void initOthers()
-        {
-            this.others_	= new Bitmap[]
+
+        private void initOthers() {
+            this.others_ = new Bitmap[]
                     {
                             BitmapFactory.decodeResource(getResources(), R.drawable.background_processview),
                             BitmapFactory.decodeResource(getResources(), R.drawable.background_gress),
@@ -990,68 +972,67 @@ public class MainActivity extends AppCompatActivity {
 
             ProcessView.setProcessPercent(ProcessView.getProcessPercent() + 10);
         }
-        public Bitmap[] getPlant(int type)
-        {
+
+        public Bitmap[] getPlant(int type) {
             return this.plants_[type];
         }
-        public Bitmap[] getZombie(int type)
-        {
+
+        public Bitmap[] getZombie(int type) {
             return this.zombies_[type];
         }
-        public Bitmap[] getCard(int type)
-        {
+
+        public Bitmap[] getCard(int type) {
             return this.cards_[type];
         }
-        public Bitmap	getSun(int type)
-        {
+
+        public Bitmap getSun(int type) {
             return this.suns_[type];
         }
-        public Bitmap[] getBullets(int type)
-        {
+
+        public Bitmap[] getBullets(int type) {
             return this.bullets_[type];
         }
-        public Bitmap getOthers(int type)
-        {
+
+        public Bitmap getOthers(int type) {
             return this.others_[type];
         }
-    }	// ImageFactory
+    }    // ImageFactory
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class PlantImageFactory
-    {
-        public static final int Plant_ShuangChongSheShou						= 0;
-        public static final int Plant_TuDouLei									= 1;
-        public static final int Plant_TuDouLei_Bomb							= 2;
-        public static final int Plant_TuDouLei_Ready							= 3;
-        public static final int Plant_TUDouLei_Text							= 4;
-        public static final int Plant_WanDouSheShou							= 5;
-        public static final int Plant_XiangRiKui								= 6;
-        public static final int Plant_XiaoJianGuoQiang						= 7;
-        public static final int Plant_XiaoJianGuoQiang_DamageLess			= 8;
-        public static final int Plant_XiaoJianGuoQiang_DamageMore			= 9;
-        public static final int Plant_MuBei									= 10;
+    public class PlantImageFactory {
+        public static final int Plant_ShuangChongSheShou = 0;
+        public static final int Plant_TuDouLei = 1;
+        public static final int Plant_TuDouLei_Bomb = 2;
+        public static final int Plant_TuDouLei_Ready = 3;
+        public static final int Plant_TUDouLei_Text = 4;
+        public static final int Plant_WanDouSheShou = 5;
+        public static final int Plant_XiangRiKui = 6;
+        public static final int Plant_XiaoJianGuoQiang = 7;
+        public static final int Plant_XiaoJianGuoQiang_DamageLess = 8;
+        public static final int Plant_XiaoJianGuoQiang_DamageMore = 9;
+        public static final int Plant_MuBei = 10;
 
-        ImageFactory				imageFactory_;
+        ImageFactory imageFactory_;
 
-        public PlantImageFactory(ImageFactory imageFactory)
-        {
-            this.imageFactory_	= imageFactory;
+        public PlantImageFactory(ImageFactory imageFactory) {
+            this.imageFactory_ = imageFactory;
         }
 
-        public Bitmap[] getImage(int type)
-        {
+        public Bitmap[] getImage(int type) {
             return this.imageFactory_.getPlant(type);
         }
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class ZombieImageFactory
-    {
+    public class ZombieImageFactory {
         // 普通僵尸
-        public static final int Zombie_PuTongJiangShi 					= 0;
+        public static final int Zombie_PuTongJiangShi = 0;
         public static final int Zombie_PuTongJiangShi_Attack = 1;
         public static final int Zombie_PuTongJiangShi_Attack_Losthead = 2;
         public static final int Zombie_PuTongJiangShi_Die = 3;
         public static final int Zombie_PuTongJiangShi_Head = 4;
-        public static final int Zombie_PuTongJiangShi_Losthead = 5;;
+        public static final int Zombie_PuTongJiangShi_Losthead = 5;
+        ;
 
         // 路障僵尸
         public static final int Zombie_LuZhangJiangShi = 6;
@@ -1061,7 +1042,7 @@ public class MainActivity extends AppCompatActivity {
         public static final int Zombie_TieTongJiangShi = 8;
         public static final int Zombie_TieTongJiangshi_Attack = 9;
 
-        public static final int Zombie_Main			= 10;
+        public static final int Zombie_Main = 10;
 
         ImageFactory imageFactory_;
 
@@ -1073,142 +1054,132 @@ public class MainActivity extends AppCompatActivity {
             return this.imageFactory_.getZombie(type);
         }
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class CardImageFactory
-    {
-        public static final int Card_LuZhangJiangShi							= 0;
-        public static final int Card_MuBei										= 1;
-        public static final int Card_PuTongJiangShi							= 2;
-        public static final int Card_ShuangChongSheShou						= 3;
-        public static final int Card_Sun										= 4;
-        public static final int Card_TieTongJiangShi							= 5;
-        public static final int Card_TuDouLei									= 6;
-        public static final int Card_WanDouSheShou							= 7;
-        public static final int Card_XiangRiKui								= 8;
-        public static final int Card_XiaoJianGuoQiang							= 9;
+    public class CardImageFactory {
+        public static final int Card_LuZhangJiangShi = 0;
+        public static final int Card_MuBei = 1;
+        public static final int Card_PuTongJiangShi = 2;
+        public static final int Card_ShuangChongSheShou = 3;
+        public static final int Card_Sun = 4;
+        public static final int Card_TieTongJiangShi = 5;
+        public static final int Card_TuDouLei = 6;
+        public static final int Card_WanDouSheShou = 7;
+        public static final int Card_XiangRiKui = 8;
+        public static final int Card_XiaoJianGuoQiang = 9;
 
-        ImageFactory				imageFactory_;
+        ImageFactory imageFactory_;
 
-        public CardImageFactory(ImageFactory imageFactory)
-        {
-            this.imageFactory_	= imageFactory;
+        public CardImageFactory(ImageFactory imageFactory) {
+            this.imageFactory_ = imageFactory;
         }
 
-        public Bitmap[] getImage(int type)
-        {
+        public Bitmap[] getImage(int type) {
             return this.imageFactory_.getCard(type);
         }
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class BulletImageFactory
-    {
-        public static final int Bullet_PuTongWanDou							= 0;
-        public static final int Bullet_PuTongWanDou_Hit						= 1;
+    public class BulletImageFactory {
+        public static final int Bullet_PuTongWanDou = 0;
+        public static final int Bullet_PuTongWanDou_Hit = 1;
 
-        ImageFactory				imageFactory_;
+        ImageFactory imageFactory_;
 
-        public BulletImageFactory(ImageFactory imageFactory)
-        {
-            this.imageFactory_	= imageFactory;
+        public BulletImageFactory(ImageFactory imageFactory) {
+            this.imageFactory_ = imageFactory;
         }
 
-        public Bitmap[] getImage(int type)
-        {
+        public Bitmap[] getImage(int type) {
             return this.imageFactory_.getBullets(type);
         }
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class SunImageFactory
-    {
-        public static final int Sun_Plant										= 0;
-        public static final int Sun_Zombie										= 1;
+    public class SunImageFactory {
+        public static final int Sun_Plant = 0;
+        public static final int Sun_Zombie = 1;
 
-        ImageFactory				imageFactory_;
+        ImageFactory imageFactory_;
 
-        public SunImageFactory(ImageFactory imageFactory)
-        {
-            this.imageFactory_	= imageFactory;
+        public SunImageFactory(ImageFactory imageFactory) {
+            this.imageFactory_ = imageFactory;
         }
 
-        public Bitmap getImage(int type)
-        {
+        public Bitmap getImage(int type) {
             return this.imageFactory_.getSun(type);
         }
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class OtherFactory
-    {
-        public final static int Background_ProcessView						= 0;
-        public final static int Background_Gress								= 1;
-        public final static int Background_MainMenu							= 2;
-        public final static int Background_MainMenu_Help_1					= 3;
-        public final static int Background_MainMenu_About					= 4;
-        public final static int Text_Prepare_01								= 5;
-        public final static int Text_Prepare_02								= 6;
-        public final static int Background_MainMenu_Help_2					= 7;
-        public final static int Background_MainMenu_Option					= 8;
-        public final static int Voice_On										= 9;
-        public final static int Voice_Off										= 10;
-        public final static int Background_Plant_Win							= 11;
-        public final static int Background_Zombie_Win							= 12;
+    public class OtherFactory {
+        public final static int Background_ProcessView = 0;
+        public final static int Background_Gress = 1;
+        public final static int Background_MainMenu = 2;
+        public final static int Background_MainMenu_Help_1 = 3;
+        public final static int Background_MainMenu_About = 4;
+        public final static int Text_Prepare_01 = 5;
+        public final static int Text_Prepare_02 = 6;
+        public final static int Background_MainMenu_Help_2 = 7;
+        public final static int Background_MainMenu_Option = 8;
+        public final static int Voice_On = 9;
+        public final static int Voice_Off = 10;
+        public final static int Background_Plant_Win = 11;
+        public final static int Background_Zombie_Win = 12;
 
-        ImageFactory				imageFactory_;
+        ImageFactory imageFactory_;
 
-        public OtherFactory(ImageFactory imageFactory)
-        {
-            this.imageFactory_	= imageFactory;
+        public OtherFactory(ImageFactory imageFactory) {
+            this.imageFactory_ = imageFactory;
         }
 
-        public Bitmap getImage(int type)
-        {
+        public Bitmap getImage(int type) {
             return this.imageFactory_.getOthers(type);
         }
-    }	// OtherFactory
+    }    // OtherFactory
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class MusicFactory
-    {
-        public final static int Background_MenuView						    = 0;
-        public final static int Background_Fighting							= 1;
-        public final static int Background_HelpViewA							= 2;
-        public final static int Background_HelpViewB							= 3;
-        public final static int Background_AboutView					        = 4;
-        public final static int Background_Zombie_WinView					    = 5;
-        public final static int Background_Plant_WinView					    = 6;
-        public final static int Zombie_Eat					                = 7;
-        public final static int Zombie_PuTong_Hited					        = 8;
-        public final static int Zombie_TieTong_Hited							= 9;
-        public final static int Zombie_ComeIn								    = 10;
-        public final static int Plant_ZhongXia					            = 11;
-        public final static int People_Dead					                = 12;
+    public class MusicFactory {
+        public final static int Background_MenuView = 0;
+        public final static int Background_Fighting = 1;
+        public final static int Background_HelpViewA = 2;
+        public final static int Background_HelpViewB = 3;
+        public final static int Background_AboutView = 4;
+        public final static int Background_Zombie_WinView = 5;
+        public final static int Background_Plant_WinView = 6;
+        public final static int Zombie_Eat = 7;
+        public final static int Zombie_PuTong_Hited = 8;
+        public final static int Zombie_TieTong_Hited = 9;
+        public final static int Zombie_ComeIn = 10;
+        public final static int Plant_ZhongXia = 11;
+        public final static int People_Dead = 12;
     	/*
     	public final static int Zombie_TieTong_Hited							= 10;
     	public final static int Zombie_ComeIn								    = 11;
     	*/
 
-        private    MIDIPlayer[]    musicplayer_;
+        private MIDIPlayer[] musicplayer_;
 
-        public MusicFactory(ImageFactory imageFactory_)
-        {
+        public MusicFactory(ImageFactory imageFactory_) {
             this.musicplayer_ = new MIDIPlayer[]
                     {
-                            new MIDIPlayer(activity_,Background_MenuView),
-                            new MIDIPlayer(activity_,Background_Fighting),
-                            new MIDIPlayer(activity_,Background_HelpViewA),
-                            new MIDIPlayer(activity_,Background_HelpViewB),
-                            new MIDIPlayer(activity_,Background_AboutView),
-                            new MIDIPlayer(activity_,Background_Zombie_WinView),
-                            new MIDIPlayer(activity_,Background_Plant_WinView),
-                            new MIDIPlayer(activity_,Zombie_Eat),
-                            new MIDIPlayer(activity_,Zombie_PuTong_Hited),
-                            new MIDIPlayer(activity_,Zombie_TieTong_Hited),
-                            new MIDIPlayer(activity_,Zombie_ComeIn),
-                            new MIDIPlayer(activity_,Plant_ZhongXia),
-                            new MIDIPlayer(activity_,People_Dead)
+                            new MIDIPlayer(activity_, Background_MenuView),
+                            new MIDIPlayer(activity_, Background_Fighting),
+                            new MIDIPlayer(activity_, Background_HelpViewA),
+                            new MIDIPlayer(activity_, Background_HelpViewB),
+                            new MIDIPlayer(activity_, Background_AboutView),
+                            new MIDIPlayer(activity_, Background_Zombie_WinView),
+                            new MIDIPlayer(activity_, Background_Plant_WinView),
+                            new MIDIPlayer(activity_, Zombie_Eat),
+                            new MIDIPlayer(activity_, Zombie_PuTong_Hited),
+                            new MIDIPlayer(activity_, Zombie_TieTong_Hited),
+                            new MIDIPlayer(activity_, Zombie_ComeIn),
+                            new MIDIPlayer(activity_, Plant_ZhongXia),
+                            new MIDIPlayer(activity_, People_Dead)
                     };
         }
 
-        public MIDIPlayer getMusicPlayer(int type)
-        {
+        public MIDIPlayer getMusicPlayer(int type) {
             return this.musicplayer_[type];
         }
     }
